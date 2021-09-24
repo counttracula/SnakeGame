@@ -9,7 +9,7 @@
 
 class Food : public GameObject {
 public:
-    Food(): GameObject(), _point{0, 0} {};
+    Food(): GameObject(ObjectType::foodObject, 0xFF), _point{0, 0} {};
     Food(SDL_Point p, int alpha): GameObject(ObjectType::foodObject, alpha), _point(p) {};
 
     // getters

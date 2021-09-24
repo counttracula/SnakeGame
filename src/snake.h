@@ -5,12 +5,13 @@
 #include "SDL.h"
 #include "GameObject.h"
 
-class Snake {
+class Snake : public GameObject {
  public:
   enum class Direction { kUp, kDown, kLeft, kRight };
 
   Snake(int grid_width, int grid_height)
-      : grid_width(grid_width),
+      : GameObject(ObjectType::snakeObject, 0xFF),
+        grid_width(grid_width),
         grid_height(grid_height),
         head_x(grid_width / 2),
         head_y(grid_height / 2) {}
