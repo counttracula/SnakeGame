@@ -20,9 +20,10 @@ enum ObjectType
 class GameObject
 {
 public:
-    // constructor / desctructor
-    GameObject(): _point{0, 0}, _type(ObjectType::noObject) {};
-    GameObject(ObjectType ot, SDL_Point p): _type(ot), _point(p) {};
+    // ctors
+    GameObject(): _type(ObjectType::noObject), _alpha(0xFF) {};
+    GameObject(ObjectType ot, int a): _type(ot), _alpha(a) {};
+    // dtor
     ~GameObject();
 
     // getter methods
@@ -33,8 +34,7 @@ public:
 
 protected:
     ObjectType _type;                 // identifies the class type
-    SDL_Point _point;                 // the main point of the game object.
-                                      // for food is the only one, for the snake its the head
+    int _alpha;                       // opacity
     std::vector<std::thread> threads; // holds all threads that have been launched within this object
     static std::mutex _mtx;           // mutex shared by all game objects that protects rendering
 };

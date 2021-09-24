@@ -9,8 +9,8 @@
 
 class Food : public GameObject {
 public:
-    Food(): GameObject(), _alpha(0xF0) {};
-    Food(SDL_Point p, int alpha): GameObject(ObjectType::foodObject, p), _alpha(alpha) {};
+    Food(): GameObject(), _point{0, 0} {};
+    Food(SDL_Point p, int alpha): GameObject(ObjectType::foodObject, alpha), _point(p) {};
 
     // getters
     int getXCoordinate() const { return _point.x; }
@@ -22,7 +22,7 @@ public:
     void setYCoordinate(int y);
     void setAlpha(int a);
 private:
-    int _alpha;
+    SDL_Point _point;
 };
 
 

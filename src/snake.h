@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "SDL.h"
+#include "GameObject.h"
 
 class Snake {
  public:
