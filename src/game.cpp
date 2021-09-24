@@ -59,7 +59,6 @@ void Game::PlaceFood() {
     x = random_w(engine);
     y = random_h(engine);
     alpha = random_a(engine);
-    std::cout << "Setting food alpha to " << alpha << std::endl;
     // Check that the location is not occupied by a snake item before placing
     // food.
     if (!snake.SnakeCell(x, y)) {
