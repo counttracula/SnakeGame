@@ -11,12 +11,15 @@ public:
     Food(): _point{0, 0}, _alpha(0xF0) {};
     Food(SDL_Point p, int alpha): _point(p), _alpha(alpha) {};
 
-    SDL_Point getCoordinates() const { return _point; }
+    int getXCoordinate() const { return _point.x; }
+    int getYCoordinate() const { return _point.y; }
     int getAlpha() const { return _alpha; }
 
-    void setCoordinates(SDL_Point p);
+    void setXCoordinate(int x);
+    void setYCoordinate(int y);
     void setAlpha(int a);
 
+private:
     SDL_Point _point;
     int _alpha;
 };

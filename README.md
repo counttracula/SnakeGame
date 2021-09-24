@@ -1,12 +1,27 @@
-# CPPND: Capstone Snake Game Example
+# Snake Game 
 
-This is a repo for the Capstone project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses.
+This is a repo for the Capstone project in the [Udacity C++ Nanodegree Program].
+It is an extension of the Snake Game template provided. The following have been 
+added to satisfy the project's requirements:
+
+* Food has been abstracted out
+* Snake(s) and Food are now running in separate threads. 
+* A few new small features have been added to the game itself:
+    * There is now a timer for the food and the game score goes down if not
+completed on time.
+    * Once a certain score is accomplished, a second snake will pop up chasing 
+our snake. This is implemented via a separate thread.  
+
+In the end the project ought to demonstrate the use of:
+* OOP, including but not limited to:
+    * Inheritance
+    * Method overloading
+    * Polymorphism
+    * Templates
+* Basic as well as advanced memory management concepts
+* Concurrency
 
 <img src="snake_game.gif"/>
-
-The Capstone Project gives you a chance to integrate what you've learned throughout this program. This project will become an important part of your portfolio to share with current and future colleagues and employers.
-
-In this project, you can build your own C++ application or extend this Snake game, following the principles you have learned throughout this Nanodegree Program. This project will demonstrate that you can independently create applications using a wide range of C++ features.
 
 ## Dependencies for Running Locally
 * cmake >= 3.7
@@ -29,7 +44,6 @@ In this project, you can build your own C++ application or extend this Snake gam
 2. Make a build directory in the top level directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
 4. Run it: `./SnakeGame`.
-
 
 ## CC Attribution-ShareAlike 4.0 International
 

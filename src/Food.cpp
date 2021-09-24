@@ -4,16 +4,12 @@
 
 #include "Food.h"
 
-class Food::Food {
-public:
-
-    SDL_Point getCoordinates() const { return this->_point; }
-    int getAlpha() const { return this->_alpha; }
-
-    void setCoordinates(SDL_Point p) {
-        this->_point = p;
-    }
-    void setAlpha(int a) {
-        this->_alpha = a;
-    }
-};
+void Food::setXCoordinate(int x) {
+    this->_point.x = x;
+}
+void Food::setYCoordinate(int y) {
+    this->_point.y = y;
+}
+void Food::setAlpha(int a) {
+    this->_alpha = a;
+}

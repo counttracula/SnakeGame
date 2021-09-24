@@ -50,8 +50,8 @@ void Renderer::Render(Snake const snake, Food const &food) {
 
   // Render food
   SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xCC, 0x00, food.getAlpha());
-  block.x = food.getCoordinates().x * block.w;
-  block.y = food.getCoordinates().y * block.h;
+  block.x = food.getXCoordinate() * block.w;
+  block.y = food.getYCoordinate() * block.h;
   SDL_RenderFillRect(sdl_renderer, &block);
 
   // Render snake's body
