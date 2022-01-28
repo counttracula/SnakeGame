@@ -1,27 +1,46 @@
 #include "game.h"
 #include <iostream>
 #include "SDL.h"
+#include "Timer.h"
+#include <chrono>
 
-Game::Game(std::size_t grid_width, std::size_t grid_height)
+Game::Game(std::size_t grid_width, std::size_t grid_height, std::size_t timer)
     : snake(grid_width, grid_height),
       engine(dev()),
       random_w(0, static_cast<int>(grid_width - 1)),
       random_h(0, static_cast<int>(grid_height - 1)),
-      random_a(1, 0xFF) {
+      random_a(1, 0xFF),
+      timeOfLunch(0),
+      inactivityTimer(timer) {
   PlaceFood();
 }
 
-void Game::Run(Controller const &controller, Renderer &renderer,
+void Game::Run(Controller const &controller, Renderer<std::size_t> &renderer,
                std::size_t target_frame_duration) {
   Uint32 title_timestamp = SDL_GetTicks();
   Uint32 frame_start;
   Uint32 frame_end;
   Uint32 frame_duration;
   int frame_count = 0;
-  bool running = true;
+  running = true;
+  std::shared_ptr<Timer> msTimer;
+
+  frame_start = SDL_GetTicks();
+  timeOfLunch = SDL_GetTicks();
+
+  auto updateScore = [&score = score, &frame_start = frame_start, &timeOfLunch = timeOfLunch, inactivityTimer=inactivityTimer]() mutable
+  {
+    if (frame_start - timeOfLunch > inactivityTimer*1000) {
+      std::cout << "Inactivity penalty! Score reduced from " << score-- << " to " << score << std::endl;
+    }
+  }; // simple lambda
+
+  msTimer = std::make_shared<Timer>(std::chrono::seconds(inactivityTimer), updateScore);
+  msTimer->start(); // spawn a timer thread to reduce the score every 10s
 
   while (running) {
     frame_start = SDL_GetTicks();
+    // launch a thread that modifies the Vehicle name
 
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
@@ -37,7 +56,8 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
     // After every second, update the window title.
     if (frame_end - title_timestamp >= 1000) {
-      renderer.UpdateWindowTitle(score, frame_count);
+
+      renderer.UpdateWindowTitle(score, frame_count, static_cast<int>(snake.speed * 100), food.getAlpha());
       frame_count = 0;
       title_timestamp = frame_end;
     }
@@ -49,26 +69,31 @@ void Game::Run(Controller const &controller, Renderer &renderer,
       SDL_Delay(target_frame_duration - frame_duration);
     }
   }
+  msTimer->stop();
+  running = false;
 }
+
+void Game::Stop() { running = false; }
 
 void Game::PlaceFood() {
   int x;
   int y;
-  int alpha;
+  
   while (true) {
     x = random_w(engine);
     y = random_h(engine);
-    alpha = random_a(engine);
+    
     // Check that the location is not occupied by a snake item before placing
     // food.
     if (!snake.SnakeCell(x, y)) {
         food.setXCoordinate(x);
         food.setYCoordinate(y);
-        food.setAlpha(alpha);
+        // food.setAlpha(food.getAlpha());
         return;
     }
   }
 }
+
 
 void Game::Update() {
   if (!snake.alive) return;
@@ -81,10 +106,13 @@ void Game::Update() {
   // Check if there's food over here
   if (food.getXCoordinate() == new_x && food.getYCoordinate() == new_y) {
     score++;
+    timeOfLunch = SDL_GetTicks(); // get time of lunch
     PlaceFood();
     // Grow snake and increase speed.
     snake.GrowBody();
     snake.speed += 0.02;
+    // make the food harder to find
+    food.setAlpha(food.getAlpha() > 50 ? food.getAlpha() - 5 : food.getAlpha());
   }
 }
 

@@ -33,15 +33,12 @@ public:
     ~GameObject();
 
     // getter methods
-    ObjectType getType() { return _type; }
-
-    // to facilitate multi-threading
-    virtual void simulate() {};
+    int getAlpha() { return _alpha; }
+    void virtual setAlpha(int a) { _alpha = a; }
 
 protected:
     ObjectType _type;                 // identifies the class type
     int _alpha;                       // opacity
-    // std::thread _objThread;              // holds all threads that have been launched within this object
     static std::mutex _mtx;           // mutex shared by all game objects that protects rendering
 };
 

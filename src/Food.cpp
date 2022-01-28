@@ -13,3 +13,7 @@ void Food::setYCoordinate(int y) {
 void Food::setAlpha(int a) {
     this->_alpha = a;
 }
+
+void Food::setMsTimer(std::size_t msTimer) {
+    this->_msTimer = msTimer;
+}

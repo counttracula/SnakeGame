@@ -7,13 +7,26 @@
 #include "renderer.h"
 #include "Food.h"
 #include "snake.h"
+#include "Timer.h"
 
 
 class Game {
  public:
-  Game(std::size_t grid_width, std::size_t grid_height);
-  void Run(Controller const &controller, Renderer &renderer,
+  Game(std::size_t grid_width, std::size_t grid_height, std::size_t timer);
+  Game(Game const &source); // copy ctor
+  Game(Game &&source);     // move ctor
+
+  Game &operator=(const Game &source); // copy assignment op
+  Game &operator=(Game &&source);      // move assignment op
+
+  // dtor
+  // ~Game();
+
+  void Run(Controller const &controller, Renderer<std::size_t> &renderer,
            std::size_t target_frame_duration);
+
+  void Stop();
+
   int GetScore() const;
   int GetSize() const;
 
@@ -27,8 +40,11 @@ class Game {
   std::uniform_int_distribution<int> random_h;
   std::uniform_int_distribution<int> random_a;
 
-  int score{0};
+  Uint32 timeOfLunch;
+  std::size_t inactivityTimer;
 
+  int score{0};
+  bool running{false};
   void PlaceFood();
   void Update();
 };

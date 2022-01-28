@@ -3,13 +3,16 @@
 #include <string>
 #include "Food.h"
 
-Renderer::Renderer(const std::size_t screen_width,
-                   const std::size_t screen_height,
-                   const std::size_t grid_width, const std::size_t grid_height)
+template <typename T>
+Renderer<T>::Renderer(const T screen_width,
+                   const T screen_height,
+                   const T grid_width,
+                   const T grid_height)
     : screen_width(screen_width),
       screen_height(screen_height),
       grid_width(grid_width),
-      grid_height(grid_height) {
+      grid_height(grid_height)
+{
   // Initialize SDL
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     std::cerr << "SDL could not initialize.\n";
@@ -34,28 +37,34 @@ Renderer::Renderer(const std::size_t screen_width,
   }
 }
 
-Renderer::~Renderer() {
+template <typename T>
+Renderer<T>::~Renderer()
+{
   SDL_DestroyWindow(sdl_window);
   SDL_Quit();
 }
 
-void Renderer::Render(Snake const snake, Food const &food) {
+template <typename T>
+void Renderer<T>::Render(Snake const snake, Food const &food)
+{
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
+  SDL_Texture *mTexture;
 
   // Clear screen
-  SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);
+  SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, food.getAlpha());
   SDL_RenderClear(sdl_renderer);
 
   // Render food
   SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xCC, 0x00, food.getAlpha());
+  SDL_SetRenderDrawBlendMode(sdl_renderer, SDL_BLENDMODE_BLEND);
   block.x = food.getXCoordinate() * block.w;
   block.y = food.getYCoordinate() * block.h;
   SDL_RenderFillRect(sdl_renderer, &block);
 
   // Render snake's body
-  SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+  SDL_SetRenderDrawColor(sdl_renderer, 0xA0, 0xA0, 0xA0, 0xA0);
   for (SDL_Point const &point : snake.body) {
     block.x = point.x * block.w;
     block.y = point.y * block.h;
@@ -76,7 +85,11 @@ void Renderer::Render(Snake const snake, Food const &food) {
   SDL_RenderPresent(sdl_renderer);
 }
 
-void Renderer::UpdateWindowTitle(int score, int fps) {
-  std::string title{"Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps)};
+template <class T>
+void Renderer<T>::UpdateWindowTitle(int score, int fps, int speed, int foodOpacity) {
+  std::string title{"Snake Score: " + std::to_string(score) + ", FPS: " + std::to_string(fps) + ", Speed: " 
+                    + std::to_string(speed) + ", Food opacity: " + std::to_string(foodOpacity)};
   SDL_SetWindowTitle(sdl_window, title.c_str());
 }
+
+template class Renderer<std::size_t>;

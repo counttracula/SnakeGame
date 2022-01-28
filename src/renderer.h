@@ -4,26 +4,28 @@
 #include <vector>
 #include "SDL.h"
 #include "snake.h"
+#include <memory>
 
 class Food;
 
+template <typename T>
 class Renderer {
  public:
-  Renderer(const std::size_t screen_width, const std::size_t screen_height,
-           const std::size_t grid_width, const std::size_t grid_height);
+  Renderer(const T screen_width, const T screen_height,
+           const T grid_width, const T grid_height);
   ~Renderer();
 
   void Render(Snake const snake, Food const &food);
-  void UpdateWindowTitle(int score, int fps);
+  void UpdateWindowTitle(int score, int fps, int speed, int foodOpacity);
 
- private:
+private:
   SDL_Window *sdl_window;
   SDL_Renderer *sdl_renderer;
 
-  const std::size_t screen_width;
-  const std::size_t screen_height;
-  const std::size_t grid_width;
-  const std::size_t grid_height;
+  const T screen_width;
+  const T screen_height;
+  const T grid_width;
+  const T grid_height;
 };
 
 #endif
