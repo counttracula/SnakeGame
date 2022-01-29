@@ -1,6 +1,7 @@
 #include <iostream>
 #include "controller.h"
 #include "game.h"
+#include <memory>
 
 #include "renderer.h"
 
@@ -15,10 +16,11 @@ int main() {
 
   Renderer<std::size_t> renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
   Controller controller;
-  Game game(kGridWidth, kGridHeight, kTimer);
-  game.Run(controller, renderer, kMsPerFrame);
+
+  std::unique_ptr<Game> gamePtr(new Game(kGridWidth, kGridHeight, kTimer));
+  gamePtr->Run(controller, renderer, kMsPerFrame);
   std::cout << "Game has terminated successfully!\n";
-  std::cout << "Score: " << game.GetScore() << "\n";
-  std::cout << "Size: " << game.GetSize() << "\n";
+  std::cout << "Score: " << gamePtr->GetScore() << "\n";
+  std::cout << "Size: " << gamePtr->GetSize() << "\n";
   return 0;
 }

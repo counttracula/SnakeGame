@@ -8,10 +8,12 @@
 #include "Food.h"
 #include "snake.h"
 #include "Timer.h"
+#include <memory>
 
 
 class Game {
  public:
+  Game();
   Game(std::size_t grid_width, std::size_t grid_height, std::size_t timer);
   Game(Game const &source); // copy ctor
   Game(Game &&source);     // move ctor
@@ -31,8 +33,8 @@ class Game {
   int GetSize() const;
 
  private:
-  Snake snake;
-  Food food;
+  std::unique_ptr<Snake> snake;
+  std::unique_ptr<Food> food;
 
   std::random_device dev;
   std::mt19937 engine;

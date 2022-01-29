@@ -86,9 +86,9 @@ void Renderer<T>::Render(Snake const snake, Food const &food)
 }
 
 template <class T>
-void Renderer<T>::UpdateWindowTitle(int score, int fps, int speed, int foodOpacity) {
-  std::string title{"Snake Score: " + std::to_string(score) + ", FPS: " + std::to_string(fps) + ", Speed: " 
-                    + std::to_string(speed) + ", Food opacity: " + std::to_string(foodOpacity)};
+void Renderer<T>::UpdateWindowTitle(int score, int speed) {
+  std::string title{"q: QUIT, ENTER: + speed, s: SAVE.\t\tSnake Score: " + std::to_string(score) + ", " + "Speed: " 
+                    + std::to_string(speed)};
   SDL_SetWindowTitle(sdl_window, title.c_str());
 }
 
