@@ -5,12 +5,18 @@ It is an extension of the Snake Game template provided. The following have been
 added to satisfy the project's requirements:
 
 * Food has been abstracted out
-* Snake(s) and Food are now running in separate threads. 
-* A few new small features have been added to the game itself:
-    * There is now a timer for the food and the game score goes down if not
-completed on time.
-    * Once a certain score is accomplished, a second snake will pop up chasing 
-our snake. This is implemented via a separate thread.  
+* Food gets harder to see (decreasing opacity) with more success
+* Inactivity or poor play cause a loss of points (if we do not get to eat the food on time)
+* There is a new Timer thread which notifies the game on every penalty timers' expiration
+* The game starts by presenting the player with a simple menu where the player can choose to start
+* a new game, continue the paused one or quit. 
+* In game, the commands are:
+** q: Quit
+** ENTER: Increase game speed
+** p: Pause
+** c: Continue
+* Default inactivity timer is 10s
+  
 
 In the end the project ought to demonstrate the use of:
 * OOP, including but not limited to:
