@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include "Food.h"
+#include "Menu.h"
 
 template <typename T>
 Renderer<T>::Renderer(const T screen_width,
@@ -87,7 +88,7 @@ void Renderer<T>::Render(Snake const snake, Food const &food)
 
 template <class T>
 void Renderer<T>::UpdateWindowTitle(int score, int speed) {
-  std::string title{"q: QUIT, ENTER: + speed, s: SAVE.\t\tSnake Score: " + std::to_string(score) + ", " + "Speed: " 
+  std::string title{"q: QUIT, enter: SPEED UP, p: PAUSE, c: CONTINUE\t\tScore: " + std::to_string(score) + ", " + "Speed: " 
                     + std::to_string(speed)};
   SDL_SetWindowTitle(sdl_window, title.c_str());
 }

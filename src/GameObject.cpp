@@ -23,6 +23,8 @@ GameObject::GameObject(GameObject &&source) {
     // move ptrs
     _type = source._type;
     _alpha = source._alpha;
+    source._type = ObjectType::noObject;
+    source._alpha = 0;
 }
 
 GameObject& GameObject::operator=(const GameObject &source) {

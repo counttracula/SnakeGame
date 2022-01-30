@@ -13,10 +13,11 @@ Game::Game(std::size_t grid_width, std::size_t grid_height, std::size_t timer)
       inactivityTimer(timer) {
   snake = std::unique_ptr<Snake>(new Snake(grid_width, grid_height));
   food = std::unique_ptr<Food>(new Food());
-  PlaceFood();
+  placeFood();
 }
 
-void Game::Run(Controller const &controller, Renderer<std::size_t> &renderer,
+
+void Game::run(Controller const &controller, Renderer<std::size_t> &renderer,
                std::size_t target_frame_duration) {
   Uint32 title_timestamp = SDL_GetTicks();
   Uint32 frame_start;
@@ -24,15 +25,21 @@ void Game::Run(Controller const &controller, Renderer<std::size_t> &renderer,
   Uint32 frame_duration;
   int frame_count = 0;
   running = true;
+  paused = false;
   std::shared_ptr<Timer> msTimer;
 
   frame_start = SDL_GetTicks();
   timeOfLunch = SDL_GetTicks();
 
-  auto updateScore = [&score = score, &frame_start = frame_start, &timeOfLunch = timeOfLunch, inactivityTimer=inactivityTimer]() mutable
+  auto updateScore = [&paused=paused, &score = score, &frame_start = frame_start, &timeOfLunch = timeOfLunch, inactivityTimer=inactivityTimer]() mutable
   {
     if (frame_start - timeOfLunch > inactivityTimer*1000) {
-      std::cout << "Inactivity penalty! Score reduced from " << score-- << " to " << score << std::endl;
+      if (!paused && score > 0) {
+            score--;
+          std::cout << "Inactivity penalty! Score reduced from " << score+1 << " to " << score << std::endl;
+      } else {
+        frame_start = SDL_GetTicks();
+      }
     }
   }; // simple lambda
 
@@ -44,8 +51,8 @@ void Game::Run(Controller const &controller, Renderer<std::size_t> &renderer,
     // launch a thread that modifies the Vehicle name
 
     // Input, Update, Render - the main game loop.
-    controller.HandleInput(running, *snake);
-    Update();
+    controller.HandleInput(running, paused, *snake);
+    update();
     renderer.Render(*snake, *food);
 
     frame_end = SDL_GetTicks();
@@ -74,9 +81,9 @@ void Game::Run(Controller const &controller, Renderer<std::size_t> &renderer,
   running = false;
 }
 
-void Game::Stop() { running = false; }
+void Game::stop() { running = false; }
 
-void Game::PlaceFood() {
+void Game::placeFood() {
   int x;
   int y;
   
@@ -96,7 +103,7 @@ void Game::PlaceFood() {
 }
 
 
-void Game::Update() {
+void Game::update() {
   if (!snake->alive) return;
 
   snake->Update();
@@ -106,9 +113,10 @@ void Game::Update() {
 
   // Check if there's food over here
   if (food->getXCoordinate() == new_x && food->getYCoordinate() == new_y) {
-    score++;
+    rawScore++;
+    score += rawScore * static_cast<int>(snake->speed * 10);
     timeOfLunch = SDL_GetTicks(); // get time of lunch
-    PlaceFood();
+    placeFood();
     // Grow snake and increase speed.
     snake->GrowBody();
     snake->speed += 0.02;
@@ -117,5 +125,6 @@ void Game::Update() {
   }
 }
 
-int Game::GetScore() const { return score; }
-int Game::GetSize() const { return snake->size; }
+int Game::getScore() const { return score; }
+int Game::getRawScore() const { return rawScore; }
+int Game::getSize() const { return snake->size; }

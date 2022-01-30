@@ -15,14 +15,14 @@ public:
     // getters
     int getXCoordinate() const { return _point.x; }
     int getYCoordinate() const { return _point.y; }
-    int getAlpha() const { return _alpha; }
     int getMsTimer() const { return _msTimer; }
 
     // setters
     void setXCoordinate(int x);
     void setYCoordinate(int y);
-    void setAlpha(int a);
+    
     void setMsTimer(std::size_t msTimer);
+    void setAlpha(int a);
 private:
     SDL_Point _point;
     std::size_t _msTimer;

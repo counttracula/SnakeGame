@@ -15,22 +15,19 @@ class Game {
  public:
   Game();
   Game(std::size_t grid_width, std::size_t grid_height, std::size_t timer);
-  Game(Game const &source); // copy ctor
-  Game(Game &&source);     // move ctor
 
-  Game &operator=(const Game &source); // copy assignment op
-  Game &operator=(Game &&source);      // move assignment op
-
-  // dtor
-  // ~Game();
-
-  void Run(Controller const &controller, Renderer<std::size_t> &renderer,
+  void run(Controller const &controller, Renderer<std::size_t> &renderer,
            std::size_t target_frame_duration);
 
-  void Stop();
+  void stop();
 
-  int GetScore() const;
-  int GetSize() const;
+  int getScore() const;
+  int getRawScore() const;
+  int getSize() const;
+
+  bool isRunning() { return !paused; }
+  void pauseTheGame() { snake->pauseTheSnake(); paused = true; }
+  void restartTheGame() { snake->restartTheSnake(); paused = false; }
 
  private:
   std::unique_ptr<Snake> snake;
@@ -45,10 +42,12 @@ class Game {
   Uint32 timeOfLunch;
   std::size_t inactivityTimer;
 
+  int rawScore{0};
   int score{0};
   bool running{false};
-  void PlaceFood();
-  void Update();
+  bool paused{false}; 
+  void placeFood();
+  void update();
 };
 
 #endif

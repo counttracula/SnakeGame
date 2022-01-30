@@ -21,6 +21,11 @@ class Snake : public GameObject {
   void GrowBody();
   bool SnakeCell(int x, int y);
 
+  void pauseTheSnake() { running = false; }
+  void restartTheSnake() { running = true; }
+
+  bool isRunning() { return running; }
+
   Direction direction = Direction::kUp;
 
   float speed{0.1f};
@@ -37,6 +42,7 @@ class Snake : public GameObject {
   bool growing{false};
   int grid_width;
   int grid_height;
+  bool running{true};
 };
 
 #endif

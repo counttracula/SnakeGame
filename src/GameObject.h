@@ -33,7 +33,7 @@ public:
     ~GameObject();
 
     // getter methods
-    int getAlpha() { return _alpha; }
+    int getAlpha() const { return _alpha; }
     void virtual setAlpha(int a) { _alpha = a; }
 
 protected:
