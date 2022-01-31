@@ -6,6 +6,7 @@
 #include "snake.h"
 #include <memory>
 #include "Menu.h"
+#include "Obstacle.h"
 
 class Food;
 
@@ -16,7 +17,7 @@ class Renderer {
            const T grid_width, const T grid_height);
   ~Renderer();
 
-  void Render(Snake const snake, Food const &food);
+  void Render(Snake const snake, Food const &food, std::vector<std::unique_ptr<Obstacle>> &obstacles);
   void UpdateWindowTitle(int score, int speed);
 
 private:

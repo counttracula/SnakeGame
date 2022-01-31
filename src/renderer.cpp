@@ -46,7 +46,7 @@ Renderer<T>::~Renderer()
 }
 
 template <typename T>
-void Renderer<T>::Render(Snake const snake, Food const &food)
+void Renderer<T>::Render(Snake const snake, Food const &food, std::vector<std::unique_ptr<Obstacle>> &obstacles)
 {
   SDL_Rect block;
   block.w = screen_width / grid_width;
@@ -63,6 +63,15 @@ void Renderer<T>::Render(Snake const snake, Food const &food)
   block.x = food.getXCoordinate() * block.w;
   block.y = food.getYCoordinate() * block.h;
   SDL_RenderFillRect(sdl_renderer, &block);
+
+  for (auto &o: obstacles) {
+    // Render Obstacles
+    SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x0C, 0x00, o->getAlpha());
+    SDL_SetRenderDrawBlendMode(sdl_renderer, SDL_BLENDMODE_BLEND);
+    block.x = o->getXCoordinate() * block.w;
+    block.y = o->getYCoordinate() * block.h;
+    SDL_RenderFillRect(sdl_renderer, &block);
+  }
 
   // Render snake's body
   SDL_SetRenderDrawColor(sdl_renderer, 0xA0, 0xA0, 0xA0, 0xA0);

@@ -14,7 +14,7 @@ int main() {
   constexpr std::size_t kGridHeight{32};
   constexpr std::size_t kTimer{10}; // penalty timer in seconds
 
-  Renderer<std::size_t> *renderer = new Renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight); // initialize on the heap for illustration purposes
+  std::unique_ptr<Renderer<std::size_t>> renderer(new Renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight)); // initialize on the heap for illustration purposes
   Controller controller; // controller can stay on the stack, no member vars
 
   std::unique_ptr<Game> gamePtr(new Game(kGridWidth, kGridHeight, kTimer)); 

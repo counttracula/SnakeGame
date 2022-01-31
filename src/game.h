@@ -8,6 +8,7 @@
 #include "Food.h"
 #include "snake.h"
 #include "Timer.h"
+#include "Obstacle.h"
 #include <memory>
 
 
@@ -26,12 +27,13 @@ class Game {
   int getSize() const;
 
   bool isRunning() { return !paused; }
-  void pauseTheGame() { snake->pauseTheSnake(); paused = true; }
-  void restartTheGame() { snake->restartTheSnake(); paused = false; }
+  void pauseTheGame() { snake.at(0)->pauseTheSnake(); paused = true; }
+  void restartTheGame() { snake.at(0)->restartTheSnake(); paused = false; }
 
  private:
-  std::unique_ptr<Snake> snake;
+  std::vector<std::unique_ptr<Snake>> snake; // in the future we can add additional AI snakes
   std::unique_ptr<Food> food;
+  std::vector<std::unique_ptr<Obstacle>> obstacles;
 
   std::random_device dev;
   std::mt19937 engine;
@@ -46,8 +48,10 @@ class Game {
   int score{0};
   bool running{false};
   bool paused{false}; 
+  
   void placeFood();
   void update();
+  void placeObstacle();
 };
 
 #endif

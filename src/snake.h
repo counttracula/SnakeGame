@@ -4,36 +4,34 @@
 #include <vector>
 #include "SDL.h"
 #include "GameObject.h"
+#include "Obstacle.h"
 
 class Snake : public GameObject {
  public:
   enum class Direction { kUp, kDown, kLeft, kRight };
 
-  Snake(int grid_width, int grid_height)
+  Snake(int grid_width, int grid_height, std::vector<std::unique_ptr<Obstacle>> &o)
       : GameObject(ObjectType::snakeObject, 0xFF),
         grid_width(grid_width),
         grid_height(grid_height),
         head_x(grid_width / 2),
-        head_y(grid_height / 2) {}
+        head_y(grid_height / 2),
+        obstacles(o) {}
 
   void Update();
-
   void GrowBody();
   bool SnakeCell(int x, int y);
-
   void pauseTheSnake() { running = false; }
   void restartTheSnake() { running = true; }
-
   bool isRunning() { return running; }
-
   Direction direction = Direction::kUp;
-
   float speed{0.1f};
   int size{1};
   bool alive{true};
   float head_x;
   float head_y;
   std::vector<SDL_Point> body;
+  std::vector<std::unique_ptr<Obstacle>> &obstacles;
 
  private:
   void UpdateHead();
