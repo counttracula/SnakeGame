@@ -8,12 +8,12 @@ added to satisfy the project's requirements:
 * Food gets harder to see (decreasing opacity) with more success
 * Inactivity or poor play cause a loss of points (if we do not get to eat the food on time)
 * There is a new Timer thread which notifies the game on every penalty timers' expiration
-** Default inactivity timer is 10s
+  * Default inactivity timer is 10s
 * In game, the commands are:
-** q: Quit
-** ENTER: Increase game speed
-** p: Pause
-** c: Continue
+  * q: Quit
+  * ENTER: Increase game speed
+  * p: Pause
+  * c: Continue
 * After every successful feeding, an obstacle pops up that our snake needs to avoid. Otherwise,
 it will die.
   
