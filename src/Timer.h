@@ -1,6 +1,8 @@
 #ifndef TIMER_H
 #define TIMER_H
 
+// Attribution: very loosely based on the post at https://amin-ahmadi.com/2019/06/22/creating-a-pure-c11-generic-timer-class/
+
 #include <chrono>
 #include <functional>
 #include <atomic>

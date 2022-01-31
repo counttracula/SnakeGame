@@ -1,7 +1,3 @@
-//
-// Created by Radmilo Racic on 23/09/2021.
-//
-
 #ifndef SDL2TEST_OBSTACLE_H
 #define SDL2TEST_OBSTACLE_H
 #include "SDL.h"
