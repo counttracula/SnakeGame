@@ -19,7 +19,6 @@ class Game {
 
   void run(Controller const &controller, Renderer<std::size_t> &renderer,
            std::size_t target_frame_duration);
-
   void stop();
 
   int getScore() const;
@@ -47,11 +46,10 @@ class Game {
   int rawScore{0};
   int score{0};
   bool running{false};
-  bool paused{false}; 
-  
-  void placeFood();
+  bool paused{false};
+
   void update();
-  void placeObstacle();
+  void placeGameObject(ObjectType gameObject);
 };
 
 #endif

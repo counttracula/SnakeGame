@@ -13,7 +13,7 @@ Game::Game(std::size_t grid_width, std::size_t grid_height, std::size_t timer)
       inactivityTimer(timer) {
   snake.emplace_back(new Snake(grid_width, grid_height, obstacles));
   food = std::unique_ptr<Food>(new Food());
-  placeFood();
+  placeGameObject(ObjectType::foodObject);
 }
 
 void Game::run(Controller const &controller, Renderer<std::size_t> &renderer,
@@ -49,10 +49,10 @@ void Game::run(Controller const &controller, Renderer<std::size_t> &renderer,
     frame_start = SDL_GetTicks();
     // launch a thread that modifies the Vehicle name
 
-    // Input, Update, Render - the main game loop.
-    controller.HandleInput(running, paused, *snake.at(0));
+    // Input, Update, Render - the main game loop
+    controller.handleInput(running, paused, *snake.at(0));
     update();
-    renderer.Render(*snake.at(0), *food, obstacles);
+    renderer.render(*snake.at(0), *food, obstacles);
 
     frame_end = SDL_GetTicks();
 
@@ -64,7 +64,7 @@ void Game::run(Controller const &controller, Renderer<std::size_t> &renderer,
     // After every second, update the window title.
     if (frame_end - title_timestamp >= 1000) {
 
-      renderer.UpdateWindowTitle(score, static_cast<int>(snake.at(0)->speed * 100));
+      renderer.updateWindowTitle(score, static_cast<int>(snake.at(0)->speed * 100));
       frame_count = 0;
       title_timestamp = frame_end;
     }
@@ -78,11 +78,12 @@ void Game::run(Controller const &controller, Renderer<std::size_t> &renderer,
   }
   msTimer->stop();
   running = false;
+  renderer.showPopUp("Game Over!", "Please try again");
 }
 
 void Game::stop() { running = false; }
 
-void Game::placeFood() {
+void Game::placeGameObject(ObjectType gameObject) {
   int x;
   int y;
   
@@ -90,33 +91,23 @@ void Game::placeFood() {
     x = random_w(engine);
     y = random_h(engine);
     
-    // Check that the location is not occupied by a snake item before placing
-    // food.
-    if (!snake.at(0)->SnakeCell(x, y)) {
-        food->setXCoordinate(x);
-        food->setYCoordinate(y);
-        // food.setAlpha(food.getAlpha());
+    if (gameObject == ObjectType::foodObject) {
+      // place food
+      if (!snake.at(0)->snakeCell(x, y)) {
+          food->setXCoordinate(x);
+          food->setYCoordinate(y);
+          return;
+      }
+    } else if (gameObject == ObjectType::obstacleObject) {
+      // place obstacle
+      // Check that the location is not occupied by a snake item before placing the obstacle
+      if (!snake.at(0)->snakeCell(x, y)) {
+        Obstacle *newObstacle = new Obstacle();
+        newObstacle->setXCoordinate(x);
+        newObstacle->setYCoordinate(y);
+        obstacles.emplace_back(newObstacle);
         return;
-    }
-  }
-}
-
-void Game::placeObstacle() {
-  int x;
-  int y;
-
-  while (true) {
-    x = random_w(engine);
-    y = random_h(engine);
-
-    // Check that the location is not occupied by a snake item before placing the obstacle
-    if (!snake.at(0)->SnakeCell(x, y))
-    {
-      Obstacle *newObstacle = new Obstacle();
-      newObstacle->setXCoordinate(x);
-      newObstacle->setYCoordinate(y);
-      obstacles.emplace_back(newObstacle);
-      return;
+      }
     }
   }
 }
@@ -124,7 +115,7 @@ void Game::placeObstacle() {
 void Game::update() {
   if (!snake.at(0)->alive) return;
 
-  snake.at(0)->Update();
+  snake.at(0)->update();
 
   int new_x = static_cast<int>(snake.at(0)->head_x);
   int new_y = static_cast<int>(snake.at(0)->head_y);
@@ -134,10 +125,10 @@ void Game::update() {
     rawScore++;
     score += rawScore * static_cast<int>(snake.at(0)->speed * 10);
     timeOfLunch = SDL_GetTicks(); // get time of lunch
-    placeFood();
-    placeObstacle();
+    placeGameObject(ObjectType::foodObject);
+    placeGameObject(ObjectType::obstacleObject);
     // Grow snake and increase speed.
-    snake.at(0)->GrowBody();
+    snake.at(0)->growBody();
     snake.at(0)->speed += 0.02;
     // make the food harder to find
     food->setAlpha(food->getAlpha() > 50 ? food->getAlpha() - 5 : food->getAlpha());

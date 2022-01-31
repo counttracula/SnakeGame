@@ -14,7 +14,8 @@ enum ObjectType
 {
     noObject,
     snakeObject,
-    foodObject
+    foodObject,
+    obstacleObject
 };
 
 class GameObject
@@ -35,6 +36,7 @@ public:
     // getter methods
     int getAlpha() const { return _alpha; }
     void virtual setAlpha(int a) { _alpha = a; }
+    ObjectType virtual getType() { return _type; }
 
 protected:
     ObjectType _type;                 // identifies the class type

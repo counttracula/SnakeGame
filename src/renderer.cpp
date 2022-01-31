@@ -46,7 +46,7 @@ Renderer<T>::~Renderer()
 }
 
 template <typename T>
-void Renderer<T>::Render(Snake const snake, Food const &food, std::vector<std::unique_ptr<Obstacle>> &obstacles)
+void Renderer<T>::render(Snake const snake, Food const &food, std::vector<std::unique_ptr<Obstacle>> &obstacles)
 {
   SDL_Rect block;
   block.w = screen_width / grid_width;
@@ -96,10 +96,15 @@ void Renderer<T>::Render(Snake const snake, Food const &food, std::vector<std::u
 }
 
 template <class T>
-void Renderer<T>::UpdateWindowTitle(int score, int speed) {
+void Renderer<T>::updateWindowTitle(int score, int speed) {
   std::string title{"q: QUIT, enter: SPEED UP, p: PAUSE, c: CONTINUE\t\tScore: " + std::to_string(score) + ", " + "Speed: " 
                     + std::to_string(speed)};
   SDL_SetWindowTitle(sdl_window, title.c_str());
+}
+
+template <class T>
+void Renderer<T>::showPopUp(std::string title, std::string msg) {
+  SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, title.c_str(), msg.c_str(), NULL);
 }
 
 template class Renderer<std::size_t>;

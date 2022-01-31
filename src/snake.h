@@ -18,9 +18,9 @@ class Snake : public GameObject {
         head_y(grid_height / 2),
         obstacles(o) {}
 
-  void Update();
-  void GrowBody();
-  bool SnakeCell(int x, int y);
+  void update();
+  void growBody();
+  bool snakeCell(int x, int y);
   void pauseTheSnake() { running = false; }
   void restartTheSnake() { running = true; }
   bool isRunning() { return running; }
@@ -34,8 +34,8 @@ class Snake : public GameObject {
   std::vector<std::unique_ptr<Obstacle>> &obstacles;
 
  private:
-  void UpdateHead();
-  void UpdateBody(SDL_Point &current_cell, SDL_Point &prev_cell);
+  void updateHead();
+  void updateBody(SDL_Point &current_cell, SDL_Point &prev_cell);
 
   bool growing{false};
   int grid_width;

@@ -17,8 +17,9 @@ class Renderer {
            const T grid_width, const T grid_height);
   ~Renderer();
 
-  void Render(Snake const snake, Food const &food, std::vector<std::unique_ptr<Obstacle>> &obstacles);
-  void UpdateWindowTitle(int score, int speed);
+  void render(Snake const snake, Food const &food, std::vector<std::unique_ptr<Obstacle>> &obstacles);
+  void updateWindowTitle(int score, int speed);
+  void showPopUp(std::string title, std::string msg);
 
 private:
   SDL_Window *sdl_window;

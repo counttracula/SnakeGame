@@ -7,8 +7,8 @@ added to satisfy the project's requirements:
 * Food has been abstracted out
 * Food gets harder to see (decreasing opacity) with more success
 * Inactivity or poor play cause a loss of points (if we do not get to eat the food on time)
-* There is a new Timer thread which notifies the game on every penalty timers' expiration
-  * Default inactivity timer is 10s
+  * There is a new Timer thread which notifies the game on every penalty timers' expiration
+    * Default inactivity timer is 10s
 * In game, the commands are:
   * q: Quit
   * ENTER: Increase game speed
@@ -21,11 +21,20 @@ it will die.
 In the end the project ought to demonstrate the use of:
 * OOP, including but not limited to:
     * Inheritance
+      * GameObject -> Food/Obstacle/Snake hierarchy
     * Method overloading
     * Polymorphism
+      * Opacity management through the objects
     * Templates
+      * Renderer class has been templated for illustrative purposes.
 * Basic as well as advanced memory management concepts
+  * When it comes to memory management, we've elected, for educational and illustrative purposes, to utilize the heap 
+    for some objects that would otherwise be placed on the stack. Again, this was only to illustrate the command of the syntax.
+    In general, objects whos size relatively small and well known at compile time can easily go on the stack whereeas objects
+    whose size is unknown and potentially unlimited ought to go on the heap. One such objec is the vector of obstacles, for instance. 
 * Concurrency
+  * In addition to SDL libraries and the main thread, there is a timer thread that notifies (via a condition varible) the main thread, 
+  where the game runs and causes penalites. 
 
 <img src="snake_game.gif"/>
 

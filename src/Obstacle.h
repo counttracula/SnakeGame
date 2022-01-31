@@ -10,7 +10,7 @@
 class Obstacle : public GameObject
 {
 public:
-    Obstacle() : GameObject(ObjectType::foodObject, 0xFF), _point{0, 0} {};
+    Obstacle() : GameObject(ObjectType::obstacleObject, 0xFF), _point{0, 0} {};
     Obstacle(SDL_Point p, int alpha) : GameObject(ObjectType::foodObject, alpha), _point(p) {};
 
     // getters
